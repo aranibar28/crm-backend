@@ -1,6 +1,7 @@
 const { response } = require("express");
 const { uploadImage, deleteImage } = require("../middlewares/cloudinary");
 const { titleCase } = require("../utils/functions");
+const { admin } = require("../utils/data");
 
 const Employee = require("../models/employee");
 const jwt = require("../middlewares/jwt");
@@ -67,7 +68,7 @@ const update_employee = async (req, res = response) => {
       }
     }
 
-    if (req.id == id) {
+    if (user._id == admin._id) {
       if (data.role != "Administrador") {
         if (req.files) {
           fs.unlinkSync(req.files.image.tempFilePath);
@@ -104,8 +105,11 @@ const update_employee = async (req, res = response) => {
 const delete_employee = async (req, res = response) => {
   let id = req.params["id"];
   try {
-    if (req.id == id) {
-      return res.json({ msg: "No puedes eliminarte tu mismo." });
+    user = await Employee.findById(id);
+    if (user._id == admin._id) {
+      return res.json({ msg: "No puedes eliminar un administrador." });
+    } else if (req.id == id) {
+      return res.json({ msg: "No puedes eliminar un usuario con sesión iniciada." });
     } else {
       let reg = await Employee.findByIdAndDelete(id);
       if (reg.image.public_id) {
@@ -122,8 +126,11 @@ const change_status = async (req, res = response) => {
   let id = req.params["id"];
   let { status } = req.body;
   try {
-    if (req.id == id) {
-      return res.json({ msg: "No puedes desactivarte tu mismo." });
+    user = await Employee.findById(id);
+    if (user._id == admin._id) {
+      return res.json({ msg: "No puedes desactivar un administrador." });
+    } else if (req.id == id) {
+      return res.json({ msg: "No puedes desactivar un usuario con sesión iniciada." });
     } else {
       reg = await Employee.findByIdAndUpdate(id, { status });
       return res.json({ data: reg });

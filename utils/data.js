@@ -10,8 +10,8 @@ const admin = {
   email: "admin@gmail.com",
   password: "$2a$10$etydPmuQhSk6ja2b09DLdujTJlbXMuNcNqQfloxhvAHJA08m7YdsK",
   full_name: "Gerson Rolando Aranibar Concha",
-  first_name: "Gerson Rolando",
-  last_name: "Aranibar Concha",
+  first_name: "GERSON ROLANDO",
+  last_name: "ARANIBAR CONCHA",
   dni: "70800756",
   phone: "940994003",
 };

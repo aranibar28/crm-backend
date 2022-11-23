@@ -77,6 +77,15 @@ const update_employee = async (req, res = response) => {
       }
     }
 
+    if (user.role != "Administrador") {
+      if (user.role != data.role) {
+        if (req.files) {
+          fs.unlinkSync(req.files.image.tempFilePath);
+        }
+        return res.json({ msg: "No puedes cambiar de rol." });
+      }
+    }
+
     if (user.password != password) {
       var new_password = bcrypt.hashSync(password, bcrypt.genSaltSync());
       data.password = new_password;

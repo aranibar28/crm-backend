@@ -6,8 +6,8 @@ const opts = {
 };
 
 const admin = {
-  _id: "6350352d598f7a82b124617b",
-  email: "admin@gmail.com",
+  _id: process.env.ROOT_ID,
+  email: process.env.ROOT_EMAIL,
   password: "$2a$10$etydPmuQhSk6ja2b09DLdujTJlbXMuNcNqQfloxhvAHJA08m7YdsK",
   full_name: "Gerson Rolando Aranibar Concha",
   first_name: "GERSON ROLANDO",

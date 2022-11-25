@@ -68,22 +68,18 @@ const update_employee = async (req, res = response) => {
       }
     }
 
-    if (user._id == admin._id) {
-      if (data.role != "Administrador") {
-        if (req.files) {
-          fs.unlinkSync(req.files.image.tempFilePath);
-        }
-        return res.json({ msg: "No puedes cambiar el rol para este usuario" });
+    if (user._id == admin._id && data.role != admin.role) {
+      if (req.files) {
+        fs.unlinkSync(req.files.image.tempFilePath);
       }
+      return res.json({ msg: "No puedes cambiar el rol de un administrador." });
     }
 
-    if (user.role != "Administrador") {
-      if (user.role != data.role) {
-        if (req.files) {
-          fs.unlinkSync(req.files.image.tempFilePath);
-        }
-        return res.json({ msg: "No puedes cambiar de rol." });
+    if (req.role != admin.role) {
+      if (req.files) {
+        fs.unlinkSync(req.files.image.tempFilePath);
       }
+      return res.json({ msg: "No tienes los permisos para cambiar de rol." });
     }
 
     if (user.password != password) {
@@ -105,7 +101,8 @@ const update_employee = async (req, res = response) => {
       }
     }
     let reg = await Employee.findByIdAndUpdate(id, data, { new: true });
-    return res.json({ data: reg });
+    const token = jwt.createToken(reg);
+    return res.json({ data: reg, token });
   } catch (error) {
     return res.json({ msg: error.message });
   }

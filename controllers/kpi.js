@@ -15,9 +15,9 @@ const Inscription_Detail = require("../models/matricula/inscription_detail");
 
 const kpi_month_payments = async (req, res = response) => {
   var arr_amounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  var earnings_year = 0;
-  var earnings_month = 0;
-  var earnings_month_past = 0;
+  var sum_earnings_year = 0;
+  var sum_earnings_month = 0;
+  var sum_earnings_month_past = 0;
 
   var count_sales = 0;
   var count_sales_past = 0;
@@ -48,14 +48,14 @@ const kpi_month_payments = async (req, res = response) => {
       }
 
       if (m == current_month) {
-        earnings_month += item.amount;
+        sum_earnings_month += item.amount;
       }
 
       if (m == Number(past_month) - 1) {
-        earnings_month_past += item.amount;
+        sum_earnings_month_past += item.amount;
       }
 
-      earnings_year += item.amount;
+      sum_earnings_year += item.amount;
     }
 
     let sales = await Sale.find({
@@ -97,15 +97,15 @@ const kpi_month_payments = async (req, res = response) => {
     return res.json({
       arr_months,
       arr_amounts,
-      widgets: {
-        earnings_year,
-        earnings_month,
-        earnings_month_past,
+      widgets:[ 
+        sum_earnings_year,
+        sum_earnings_month,
+        sum_earnings_month_past,
         count_sales,
         count_sales_past,
         count_inscriptions,
         count_inscriptions_past,
-      },
+      ],
     });
   } catch (error) {
     return res.json({ msg: error.message });

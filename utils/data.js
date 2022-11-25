@@ -12,6 +12,7 @@ const admin = {
   full_name: "Gerson Rolando Aranibar Concha",
   first_name: "GERSON ROLANDO",
   last_name: "ARANIBAR CONCHA",
+  role: "Administrador",
   dni: "70800756",
   phone: "940994003",
 };

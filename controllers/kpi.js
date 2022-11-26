@@ -12,6 +12,7 @@ const Sale_Detail = require("../models/ecommerce/sale_detail");
 const Course = require("../models/matricula/course");
 const Inscription = require("../models/matricula/inscription");
 const Inscription_Detail = require("../models/matricula/inscription_detail");
+const Cycle_Room = require("../models/matricula/cycle_room");
 
 const kpi_month_payments = async (req, res = response) => {
   var arr_amounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -97,15 +98,7 @@ const kpi_month_payments = async (req, res = response) => {
     return res.json({
       arr_months,
       arr_amounts,
-      widgets:[ 
-        sum_earnings_year,
-        sum_earnings_month,
-        sum_earnings_month_past,
-        count_sales,
-        count_sales_past,
-        count_inscriptions,
-        count_inscriptions_past,
-      ],
+      widgets: [sum_earnings_year, sum_earnings_month, sum_earnings_month_past, count_sales, count_sales_past, count_inscriptions, count_inscriptions_past],
     });
   } catch (error) {
     return res.json({ msg: error.message });
@@ -470,13 +463,13 @@ const kpi_top_courses = async (req, res = response) => {
         $lte: last_day,
       },
       status: { $in: ["Aprobado", "Procesando"] },
-    }).populate("course cycle_room");
+    }).populate("course");
 
     for (let i = 0; i < arr_courses.length; i++) {
       let count = 0;
       for (let subitem of payments) {
         if (arr_courses[i] === subitem.course.title) {
-          count += subitem.cycle_room?.students || 1;
+          count += 1;
         }
       }
       arr_counts.push(count);

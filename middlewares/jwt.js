@@ -29,12 +29,7 @@ const createTokenPublic = (user) => {
   return jwt.encode(payload, secret);
 };
 
-const generateTokenMenu = (menu) => {
-  return jwt.encode(menu, secret);
-};
-
 module.exports = {
   createToken,
   createTokenPublic,
-  generateTokenMenu,
 };

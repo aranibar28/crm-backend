@@ -36,7 +36,7 @@ const objInstructor = {
   ],
 };
 
-const getMenu = (role = "") => {
+const getRoutes = (role = "") => {
   const sidebar = [
     {
       title: "Dashboard",
@@ -93,5 +93,5 @@ const getMenu = (role = "") => {
 };
 
 module.exports = Object.freeze({
-  getMenu,
+  getRoutes,
 });

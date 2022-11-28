@@ -1,8 +1,8 @@
 const { response } = require("express");
 const { uploadImage, deleteImage } = require("../middlewares/cloudinary");
 const { titleCase } = require("../utils/functions");
+const { getRoutes } = require("../utils/sidebar");
 const { admin } = require("../utils/data");
-const { getMenu } = require("../utils/sidebar");
 
 const Employee = require("../models/employee");
 const jwt = require("../middlewares/jwt");
@@ -162,8 +162,7 @@ const login_employee = async (req, res = response) => {
           return res.json({ msg: "El usuario no tiene acceso al sistema." });
         } else {
           let token = jwt.createToken(user);
-          let sidebar = getMenu(user.role);
-          let menu = jwt.generateTokenMenu(sidebar);
+          let menu = getRoutes(user.role);
           return res.json({ data: user, token, menu });
         }
       }
@@ -178,8 +177,7 @@ const renew_token = async (req, res = response) => {
   try {
     let user = await Employee.findById(id);
     let token = jwt.createToken(user);
-    let sidebar = getMenu(user.role);
-    let menu = jwt.generateTokenMenu(sidebar);
+    let menu = getRoutes(user.role);
     return res.json({ data: user, token, menu });
   } catch (error) {
     return res.json({ msg: error.message });

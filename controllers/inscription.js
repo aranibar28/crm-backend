@@ -1,6 +1,6 @@
 const { response } = require("express");
-const { register_activity, update_type_prospect } = require("../utils/async");
-const { send_email_invoice } = require("../middlewares/email");
+const { register_activity, update_type_prospect } = require("../utils/helpers");
+const { send_email_invoice } = require("../utils/email");
 
 const Inscription = require("../models/matricula/inscription");
 const Inscription_Detail = require("../models/matricula/inscription_detail");

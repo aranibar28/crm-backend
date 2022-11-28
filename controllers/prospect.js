@@ -1,7 +1,7 @@
 const { response } = require("express");
 const { arr_months } = require("../utils/data");
-const { create_activity } = require("../utils/async");
-const { send_email_prospect } = require("../middlewares/email");
+const { create_activity } = require("../utils/helpers");
+const { send_email_prospect } = require("../utils/email");
 const moment = require("moment");
 
 const Customer = require("../models/customer");

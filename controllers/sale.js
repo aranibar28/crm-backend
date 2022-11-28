@@ -1,5 +1,5 @@
 const { response } = require("express");
-const { register_activity, update_type_prospect, decrease_stock, increase_stock } = require("../utils/async");
+const { register_activity, update_type_prospect, decrease_stock, increase_stock } = require("../utils/helpers");
 const Sale = require("../models/ecommerce/sale");
 const Sale_Detail = require("../models/ecommerce/sale_detail");
 const Payment = require("../models/payments");

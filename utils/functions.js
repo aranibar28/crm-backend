@@ -37,8 +37,22 @@ const getMonths = (start_month, final_month) => {
   return arr_months;
 };
 
+const getRole = (role) => {
+  switch (role) {
+    case "Administrador":
+      return ["Administrador"];
+    case "Vendedor":
+      return ["Administrador", "Vendedor"];
+    case "Instuctor":
+      return ["Administrador", "Instuctor"];
+    default:
+      return ["Administrador", "Vendedor", "Instuctor"];
+  }
+};
+
 module.exports = {
   generateSlug,
   titleCase,
   getMonths,
+  getRole,
 };

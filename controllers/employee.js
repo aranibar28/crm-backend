@@ -5,7 +5,7 @@ const { getRoutes } = require("../utils/sidebar");
 const { admin } = require("../utils/data");
 
 const Employee = require("../models/employee");
-const jwt = require("../middlewares/jwt");
+const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 var fs = require("fs");
 
@@ -76,7 +76,7 @@ const update_employee = async (req, res = response) => {
       return res.json({ msg: "No puedes cambiar el rol de un administrador." });
     }
 
-    if (req.role != admin.role) {
+    if (req.role != data.role) {
       if (req.files) {
         fs.unlinkSync(req.files.image.tempFilePath);
       }

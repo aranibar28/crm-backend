@@ -1,5 +1,5 @@
 const { response } = require("express");
-const { register_activity, update_type_prospect } = require("../utils/async");
+const { register_activity, update_type_prospect } = require("../utils/helpers");
 const Payment = require("../models/payments");
 const Customer = require("../models/customer");
 const Inscription = require("../models/matricula/inscription");

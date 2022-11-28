@@ -1,6 +1,5 @@
 const cloudinary = require("cloudinary").v2;
 const fileUpload = require("express-fileupload");
-const path = require("path");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -9,7 +8,7 @@ cloudinary.config({
   secure: true,
 });
 
-const uploadPath = fileUpload({
+const tempUpload = fileUpload({
   useTempFiles: true,
   tempFileDir: "uploads",
 });
@@ -27,7 +26,7 @@ const deleteImage = async (publicId) => {
 };
 
 module.exports = {
-  uploadPath,
+  tempUpload,
   uploadImage,
   deleteImage,
 };

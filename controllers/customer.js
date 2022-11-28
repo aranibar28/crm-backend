@@ -1,10 +1,10 @@
 const { response } = require("express");
 const { uploadImage, deleteImage } = require("../middlewares/cloudinary");
 const { titleCase } = require("../utils/functions");
-const { send_email_verify } = require("../middlewares/email");
+const { send_email_verify } = require("../utils/email");
 
 const Customer = require("../models/customer");
-const jwt = require("../middlewares/jwt");
+const jwt = require("../utils/jwt");
 const bcrypt = require("bcryptjs");
 var fs = require("fs");
 

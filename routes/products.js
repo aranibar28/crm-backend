@@ -1,14 +1,14 @@
 const { Router } = require("express");
 const { validateJWT } = require("../middlewares/authenticated");
-const { uploadPath } = require("../middlewares/cloudinary");
+const { tempUpload } = require("../middlewares/cloudinary");
 const ctrl = require("../controllers/product");
 const router = Router();
 
 //[ http://localhost:3000/api/products ]
-router.post("/create_product", [validateJWT, uploadPath], ctrl.create_product);
+router.post("/create_product", [validateJWT, tempUpload], ctrl.create_product);
 router.get("/read_products", [validateJWT], ctrl.read_products);
 router.get("/read_product_by_id/:id", [validateJWT], ctrl.read_product_by_id);
-router.put("/update_product/:id", [validateJWT, uploadPath], ctrl.update_product);
+router.put("/update_product/:id", [validateJWT, tempUpload], ctrl.update_product);
 router.delete("/delete_product/:id", [validateJWT], ctrl.delete_product);
 router.put("/change_status/:id", [validateJWT], ctrl.change_status);
 

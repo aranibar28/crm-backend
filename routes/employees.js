@@ -6,6 +6,7 @@ const router = Router();
 
 //[ http://localhost:3000/api/employees ]
 router.post("/login_employee", ctrl.login_employee);
+router.get("/renew", [validateJWT], ctrl.renew_token);
 router.post("/create_employee", [validateJWT, uploadPath], ctrl.create_employee);
 router.get("/read_employees", [validateJWT], ctrl.read_employees);
 router.get("/read_employee_by_id/:id", [validateJWT], ctrl.read_employee_by_id);

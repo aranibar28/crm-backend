@@ -30,7 +30,7 @@ const validateJWT = (req, res, next) => {
 };
 
 const validateROLE = async (req, res, next) => {
-  const id = req.user.sub;
+  const id = req.id;
   try {
     const user = await User.findById(id);
     if (!user) {

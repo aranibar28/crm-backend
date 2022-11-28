@@ -170,6 +170,17 @@ const login_employee = async (req, res = response) => {
   }
 };
 
+const renew_token = async (req, res = response) => {
+  try {
+    let id = req.id;
+    let user = await Employee.findById(id);
+    let token = jwt.createToken(user);
+    return res.json({ data: user, token });
+  } catch (error) {
+    return res.json({ msg: error.message });
+  }
+};
+
 module.exports = {
   create_employee,
   read_employees,
@@ -178,4 +189,5 @@ module.exports = {
   delete_employee,
   change_status,
   login_employee,
+  renew_token,
 };

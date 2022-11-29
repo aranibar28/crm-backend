@@ -5,8 +5,7 @@ const createToken = (user) => {
   return new Promise((resolve, reject) => {
     const payload = {
       sub: user._id,
-      first_name: user.first_name,
-      last_name: user.last_name,
+      full_name: user.full_name,
       email: user.email,
       role: user.role,
       image: user.image?.secure_url,
@@ -23,13 +22,10 @@ const createToken = (user) => {
 };
 
 const createTokenPublic = (user) => {
-
-  console.log(user);
   return new Promise((resolve, reject) => {
     const payload = {
       sub: user._id,
-      first_name: user.first_name,
-      last_name: user.last_name,
+      full_name: user.full_name,
       email: user.email,
       type: user.type,
     };

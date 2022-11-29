@@ -76,7 +76,7 @@ const update_employee = async (req, res = response) => {
       return res.json({ msg: "No puedes cambiar el rol de un administrador." });
     }
 
-    if (req.role != data.role) {
+    if (req.id == id && user.role != data.role) {
       if (req.files) {
         fs.unlinkSync(req.files.image.tempFilePath);
       }

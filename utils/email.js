@@ -2,7 +2,7 @@ const Customer = require("../models/customer");
 const Company = require("../models/company");
 const Inscription = require("../models/matricula/inscription");
 const Inscription_Detail = require("../models/matricula/inscription_detail");
-const jwt_customer = require("./jwt");
+const jwt = require("./jwt");
 const moment = require("moment");
 
 var fs = require("fs");
@@ -36,7 +36,7 @@ const send_email_verify = async (email) => {
 
   //OBTENER CLIENTE
   var customer = await Customer.findOne({ email });
-  var token = jwt_customer.createTokenPublic(customer);
+  var token = await jwt.createTokenPublic(customer);
 
   readHTMLFile(process.cwd() + "/mails/account_verify.html", (err, html) => {
     let rest_html = ejs.render(html, { token });

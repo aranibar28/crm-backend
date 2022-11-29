@@ -1,32 +1,47 @@
-const jwt = require("jwt-simple");
-const moment = require("moment");
+const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
 
 const createToken = (user) => {
-  const payload = {
-    sub: user._id,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    role: user.role,
-    image: user.image?.secure_url,
-    iat: moment().unix(),
-    exp: moment().add(12, "h").unix(),
-  };
-  return jwt.encode(payload, secret);
+  return new Promise((resolve, reject) => {
+    const payload = {
+      sub: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      role: user.role,
+      image: user.image?.secure_url,
+    };
+    return jwt.sign(payload, secret, { expiresIn: "12h" }, (error, token) => {
+      if (error) {
+        console.log(error);
+        reject("No se pudo generar el JWT");
+      } else {
+        resolve(token);
+      }
+    });
+  });
 };
 
 const createTokenPublic = (user) => {
-  const payload = {
-    sub: user._id,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    type: user.type,
-    iat: moment().unix(),
-    exp: moment().add(12, "h").unix(),
-  };
-  return jwt.encode(payload, secret);
+
+  console.log(user);
+  return new Promise((resolve, reject) => {
+    const payload = {
+      sub: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      type: user.type,
+    };
+    return jwt.sign(payload, secret, { expiresIn: "12h" }, (error, token) => {
+      if (error) {
+        console.log(error);
+        reject("No se pudo generar el JWT");
+      } else {
+        resolve(token);
+      }
+    });
+  });
 };
 
 module.exports = {

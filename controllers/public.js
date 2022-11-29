@@ -4,7 +4,7 @@ const Customer = require("../models/customer");
 const Inscription = require("../models/matricula/inscription");
 const Survey = require("../models/survey");
 const moment = require("moment");
-const jwt = require("jwt-simple");
+const jwt = require("jsonwebtoken");
 
 const generate_token = async (req, res = response) => {
   let inscription = req.params["inscription"];
@@ -13,11 +13,9 @@ const generate_token = async (req, res = response) => {
   var payload = {
     inscription: inscription,
     customer: customer,
-    iat: moment().unix(),
-    exp: moment().add(1, "day").unix(),
   };
 
-  let token = jwt.encode(payload, process.env.SECRET_KEY);
+  let token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "12h" });
   return res.json({ token });
 };
 

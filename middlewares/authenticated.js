@@ -1,31 +1,22 @@
-var jwt = require("jwt-simple");
-var moment = require("moment");
-var secret = process.env.SECRET_KEY;
+const jwt = require("jsonwebtoken");
+const secret = process.env.SECRET_KEY;
 
 const validateJWT = (req, res, next) => {
-  if (!req.headers.token) {
-    return res.status(403).send({ msg: "No se proporcionó ningun token." });
+  const token = req.headers.token;
+
+  if (!token) {
+    return res.status(401).json({ msg: "No se proporcionó ningun token." });
   }
 
-  var token = req.headers.token.replace(/['"]+/g, "");
-  var segment = token.split(".");
-
-  if (segment.length != 3) {
-    return res.status(403).send({ msg: "Invalid token" });
-  } else {
-    try {
-      var payload = jwt.decode(token, secret);
-      if (payload.exp <= moment().unix()) {
-        return res.status(403).send({ msg: "Expired token" });
-      }
-    } catch (error) {
-      return res.status(403).send({ msg: "Invalid token" });
-    }
+  try {
+    const payload = jwt.verify(token, secret);
+    req.user = payload;
+    req.role = payload.role;
+    req.id = payload.sub;
+    next();
+  } catch (error) {
+    return res.status(401).json({ msg: "Token no válido" });
   }
-  req.user = payload;
-  req.role = payload.role;
-  req.id = payload.sub;
-  next();
 };
 
 module.exports = { validateJWT };

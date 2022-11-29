@@ -106,7 +106,7 @@ const update_customer = async (req, res = response) => {
     }
 
     if (JSON.parse(data.send_verify)) {
-      send_email_verify(data.email);
+      send_email_verify(email);
     }
 
     let reg = await Customer.findByIdAndUpdate(id, data, { new: true });
@@ -154,7 +154,7 @@ const login_customer = async (req, res = response) => {
         if (!user.status) {
           return res.json({ msg: "El usuario no tiene acceso al sistema." });
         } else {
-          const token = jwt.createToken(user);
+          const token = await jwt.createToken(user);
           return res.json({ data: user, token });
         }
       }

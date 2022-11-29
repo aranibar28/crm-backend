@@ -36,7 +36,7 @@ const objInstructor = {
   ],
 };
 
-const getRoutes = (role = "") => {
+const getMenu = (role = "") => {
   const sidebar = [
     {
       title: "Dashboard",
@@ -60,7 +60,7 @@ const getRoutes = (role = "") => {
     },
   ];
 
-  if (role === "Administrador" || role === "Gerente") {
+  if (role === "Administrador") {
     sidebar[0].menu.push(
       {
         title: "Configuración",
@@ -93,5 +93,5 @@ const getRoutes = (role = "") => {
 };
 
 module.exports = Object.freeze({
-  getRoutes,
+  getMenu,
 });

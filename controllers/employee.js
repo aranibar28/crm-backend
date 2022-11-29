@@ -173,9 +173,12 @@ const login_employee = async (req, res = response) => {
 };
 
 const renew_token = async (req, res = response) => {
-  let id = req.id;
   try {
+    let id = req.id;
     let user = await Employee.findById(id);
+    if (!user) {
+      return res.json({ msg: "No existe el usuario." });
+    }
     let token = await jwt.createToken(user);
     let menu = getMenu(user.role);
     return res.json({ data: user, token, menu });

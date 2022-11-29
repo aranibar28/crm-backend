@@ -5,7 +5,7 @@ const validateJWT = (req, res, next) => {
   const token = req.headers.token;
 
   if (!token) {
-    return res.status(401).json({ msg: "No se proporcionó ningun token." });
+    return res.status(401).json("Unauthorized User");
   }
 
   try {
@@ -15,7 +15,10 @@ const validateJWT = (req, res, next) => {
     req.id = payload.sub;
     next();
   } catch (error) {
-    return res.status(401).json({ msg: "Token no válido" });
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ msg: "Expired Token" });
+    }
+    return res.status(401).json({ msg: "Invalid Token" });
   }
 };
 

@@ -1,3 +1,22 @@
+const objAdministrador = {
+  title: "Empresa",
+  icon: "uil-building",
+  menu: [
+    {
+      title: "Configuración",
+      path: "/config",
+    },
+    {
+      title: "Rendimiento",
+      path: "/performance",
+    },
+    {
+      title: "Ingresos",
+      path: "/earnings",
+    },
+  ],
+};
+
 const objVendedor = {
   title: "Ecommerce",
   icon: "uil-store",
@@ -39,16 +58,6 @@ const objInstructor = {
 const getMenu = (role = "") => {
   const sidebar = [
     {
-      title: "Dashboard",
-      icon: "uil-home-alt",
-      menu: [
-        {
-          title: "Mi cuenta",
-          path: "/profile",
-        },
-      ],
-    },
-    {
       title: "Usuarios",
       icon: "uil-user",
       menu: [
@@ -61,16 +70,7 @@ const getMenu = (role = "") => {
   ];
 
   if (role === "Administrador") {
-    sidebar[0].menu.push(
-      {
-        title: "Configuración",
-        path: "/config",
-      },
-      {
-        title: "Rendimiento",
-        path: "/performance",
-      }
-    );
+    sidebar.unshift(objAdministrador);
 
     sidebar[1].menu.unshift({
       title: "Empleados",

@@ -57,7 +57,7 @@ const read_current_cycles = async (req, res = response) => {
         for (let subitem of rooms) {
           let fx = await Cycle_Instructor.findOne({ cycle_room: subitem._id }).populate("employee");
           if (fx) {
-            subitem.instructor = fx.employee.full_name;
+            subitem.instructor = fx.employee?.full_name;
           }
         }
         arr_cycles.push({

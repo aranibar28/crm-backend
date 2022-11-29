@@ -77,24 +77,9 @@ const confirm_email_verify = async (req, res = response) => {
   }
 };
 
-const verify_token = async (req, res = response) => {
-  if (req.user) {
-    const payload = req.user;
-
-    if (payload.exp <= moment().unix()) {
-      return res.json({ data: false });
-    }
-
-    return res.json({ data: true });
-  } else {
-    return res.json({ data: false });
-  }
-};
-
 module.exports = {
   generate_token,
   send_survey,
   read_survey,
   confirm_email_verify,
-  verify_token,
 };

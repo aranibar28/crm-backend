@@ -4,6 +4,7 @@ const ctrl = require("../controllers/kpi");
 const router = Router();
 
 //[ http://localhost:3000/api/kpi ]
+router.get("/kpi_widgets", [validateJWT], ctrl.kpi_widgets);
 router.get("/kpi_month_payments", [validateJWT], ctrl.kpi_month_payments);
 router.get("/kpi_month_type/:year/:month", [validateJWT], ctrl.kpi_month_type);
 router.get("/kpi_month_method/:year/:month", [validateJWT], ctrl.kpi_month_method);

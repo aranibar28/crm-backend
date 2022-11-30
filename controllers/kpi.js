@@ -3,9 +3,12 @@ const { arr_months } = require("../utils/data");
 const moment = require("moment");
 
 const Customer = require("../models/customer");
+const Employee = require("../models/employee");
 const Payment = require("../models/payments");
 
+const Category = require("../models/ecommerce/category");
 const Product = require("../models/ecommerce/product");
+
 const Sale = require("../models/ecommerce/sale");
 const Sale_Detail = require("../models/ecommerce/sale_detail");
 
@@ -14,17 +17,34 @@ const Inscription = require("../models/matricula/inscription");
 const Inscription_Detail = require("../models/matricula/inscription_detail");
 const Cycle_Room = require("../models/matricula/cycle_room");
 
+const kpi_widgets = async (req, res = response) => {
+  let widgets = [0, 0, 0, 0, 0, 0, 0, 0];
+
+  let employees = await Employee.find().count();
+  let customers = await Customer.find().count();
+  let sales = await Sale.find().count();
+  let inscriptions = await Inscription.find().count();
+  let categories = await Category.find().count();
+  let products = await Product.find().count();
+  let courses = await Course.find().count();
+  let schedules = await Cycle_Room.find().count();
+
+  widgets[0] = employees;
+  widgets[1] = customers;
+  widgets[2] = sales;
+  widgets[3] = inscriptions;
+  widgets[4] = categories;
+  widgets[5] = products;
+  widgets[6] = courses;
+  widgets[7] = schedules;
+
+  return res.json({ widgets });
+};
+
 const kpi_month_payments = async (req, res = response) => {
-  var arr_amounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  var sum_earnings_year = 0;
-  var sum_earnings_month = 0;
-  var sum_earnings_month_past = 0;
-
-  var count_sales = 0;
-  var count_sales_past = 0;
-
-  var count_inscriptions = 0;
-  var count_inscriptions_past = 0;
+  var sales_amounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var inscriptions_amounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  var widgets = [0, 0, 0, 0, 0, 0, 0];
 
   try {
     let first_day = moment().startOf("year");
@@ -41,64 +61,47 @@ const kpi_month_payments = async (req, res = response) => {
     });
 
     for (let item of payments) {
+      // Calcular ganancias de todos los meses
       let m = moment(item.created_at).format("M");
       for (let i = 1; i <= 12; i++) {
         if (m == i) {
-          arr_amounts[i - 1] += item.amount;
+          if (item.type == "Venta") {
+            sales_amounts[i - 1] += item.amount;
+          } else if (item.type == "Matricula") {
+            inscriptions_amounts[i - 1] += item.amount;
+          }
         }
       }
 
+      // Calcular ganancias del mes actual
       if (m == current_month) {
-        sum_earnings_month += item.amount;
+        if (item.type == "Venta") {
+          widgets[3] += item.amount;
+        } else if (item.type == "Matricula") {
+          widgets[5] += item.amount;
+        }
+        widgets[1] += item.amount;
       }
 
+      // Calcular ganancias del mes anterior
       if (m == Number(past_month) - 1) {
-        sum_earnings_month_past += item.amount;
+        if (item.type == "Venta") {
+          widgets[4] += item.amount;
+        } else if (item.type == "Matricula") {
+          widgets[6] += item.amount;
+        }
+        widgets[2] += item.amount;
       }
 
-      sum_earnings_year += item.amount;
-    }
-
-    let sales = await Sale.find({
-      created_at: {
-        $gte: first_day,
-        $lte: last_day,
-      },
-      status: { $in: ["Aprobado", "Procesando"] },
-    });
-
-    for (let item of sales) {
-      let m = moment(item.created_at).format("M");
-      if (m == current_month) {
-        count_sales++;
-      }
-      if (m == Number(past_month) - 1) {
-        count_sales_past++;
-      }
-    }
-
-    let inscriptions = await Inscription.find({
-      created_at: {
-        $gte: first_day,
-        $lte: last_day,
-      },
-      status: { $in: ["Aprobado", "Procesando"] },
-    });
-
-    for (let item of inscriptions) {
-      let m = moment(item.created_at).format("M");
-      if (m == current_month) {
-        count_inscriptions++;
-      }
-      if (m == Number(past_month) - 1) {
-        count_inscriptions_past++;
-      }
+      // calcular ganancias totales
+      widgets[0] += item.amount;
     }
 
     return res.json({
       arr_months,
-      arr_amounts,
-      widgets: [sum_earnings_year, sum_earnings_month, sum_earnings_month_past, count_sales, count_sales_past, count_inscriptions, count_inscriptions_past],
+      sales_amounts,
+      inscriptions_amounts,
+      widgets,
     });
   } catch (error) {
     return res.json({ msg: error.message });
@@ -505,6 +508,7 @@ const kpi_top_courses = async (req, res = response) => {
   }
 };
 module.exports = {
+  kpi_widgets,
   kpi_month_payments,
   kpi_month_type,
   kpi_month_method,

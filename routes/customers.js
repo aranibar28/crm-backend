@@ -4,7 +4,6 @@ const { tempUpload } = require("../middlewares/cloudinary");
 const ctrl = require("../controllers/customer");
 const router = Router();
 
-router.post("/login_customer", ctrl.login_customer);
 router.get("/read_customers/:filter?", [validateJWT], ctrl.read_customers);
 router.get("/read_customer_by_id/:id", [validateJWT], ctrl.read_customer_by_id);
 router.post("/create_customer", [validateJWT, tempUpload], ctrl.create_customer);

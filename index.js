@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(compression());
-mongoose.set('strictQuery', true);
+
 mongoose.connect(process.env.MONGO_DB).then(() => console.log("DB Online"));
 
 
